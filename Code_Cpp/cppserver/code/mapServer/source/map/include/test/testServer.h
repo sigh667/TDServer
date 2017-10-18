@@ -30,7 +30,7 @@ public:
 	}
 	void onRun(unsigned long long nMsNow) override
 	{
-		if (m_ClientPeerCount ++ < 1000)
+		if (m_ClientPeerCount ++ < 1)
 		{
 			m_lstThreads.front()->addConnector("127.0.0.1", 19999);
 		}
@@ -50,7 +50,7 @@ public:
 		//创建io线程
 		m_pNThread = new CTestClientNetwork(2);
 		if (!m_pNThread
-			|| !m_pNThread->setTimeElapse(0, 100000)
+			|| !m_pNThread->setTimeElapse(10, 0)
 			|| !m_pNThread->initThread()
 			//|| !m_pNThread->addConnector("127.0.0.1", 19999)
 			|| !m_pNThread->start())

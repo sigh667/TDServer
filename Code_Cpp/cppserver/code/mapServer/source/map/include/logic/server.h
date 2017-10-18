@@ -46,7 +46,7 @@ public:
 		//创建io线程
 		m_pNThread = new CNetworkThread(2);
 		if (!m_pNThread
-			|| !m_pNThread->setTimeElapse(0,5000)
+			|| !m_pNThread->setTimeElapse(0,100)
 			|| !m_pNThread->initThread()
 			|| !m_pNThread->addListener("127.0.0.1", 19999)
 			|| !m_pNThread->start())

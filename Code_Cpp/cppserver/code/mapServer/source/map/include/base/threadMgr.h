@@ -199,10 +199,11 @@ private:
 #include <event2/event.h>
 class CThreadLE : public  IThread
 {
-	event_base* m_pBase{ NULL };
-	struct event * m_pEvent {NULL};//timer的事件
-	struct timeval m_tv { 0, 10000 };//默认100毫秒
+	event_base*		m_pBase{ NULL };
+	struct event *	m_pEvent {NULL};//timer的事件
+	struct timeval	m_tv { 0, 10000 };//默认100毫秒
 	bool			m_bNeedTimer{ false };
+	bool			m_bExit{ false };
 public:
 	CThreadLE(int id):IThread(id)
 	{
@@ -267,17 +268,17 @@ public:
 		m_pBase = event_base_new();
 		if (m_pBase != NULL)
 		{
-			//if (m_bNeedTimer)
+			if (m_bNeedTimer)
 			{
 				m_pEvent = evtimer_new(m_pBase, CThreadLE::cb, this);
 				return m_pEvent
 					&& 0 == evtimer_add(m_pEvent, &m_tv);
 
 			}
-			//else
-			//{
-			//	return true;
-			//}
+			else
+			{
+				return true;
+			}
 		} 
 		return false;
 	}
@@ -286,9 +287,10 @@ public:
 	{
 		if (m_pBase)
 		{
+			m_bExit = true;
 			struct timeval tv;
-			tv.tv_sec = 0;
-			tv.tv_usec = 1;
+			tv.tv_sec = 1;//一秒以后退出
+			tv.tv_usec = 0;
 			event_base_loopexit(m_pBase, &tv);
 		}
 		return IThread::stop();
@@ -296,7 +298,14 @@ public:
 
 	void run() override
 	{
-		event_base_loop(m_pBase, 0);
+		while (!m_bExit)
+		{
+			if (-1 == event_base_loop(m_pBase, EVLOOP_ONCE))
+			{
+				//出错
+				break;
+			}
+		}
 		event_base_free(m_pBase);
 	}
 

@@ -85,7 +85,7 @@ public:
 	}
 	bool doSend(const unsigned char* p, size_t s) override
 	{
-		//需要考虑多线程枷锁
+		//需要用枷锁的事件队列来做缓冲，主线程才真正调用send
 		bufferevent_write(m_bev, p, s);
 		return true;
 	}

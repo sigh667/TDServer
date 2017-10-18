@@ -41,7 +41,6 @@ public:
 		if (p)
 		{
 			m_mpPeers[p->socket()] = p;
-			//发送登陆消息，表明自己身份
 		}
 	}
 	CLEPeer* getFirstPeer()
@@ -71,6 +70,7 @@ public:
 
 	virtual bool initThread()
 	{
+		setNeedTimer(true);
 		if (BASECLASS::initThread())
 		{
 			//注册
