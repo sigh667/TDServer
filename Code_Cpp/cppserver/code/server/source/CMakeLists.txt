@@ -1,8 +1,0 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)
-
-# Ìí¼ÓÔ´Ä¿Â¼-lib
-ADD_SUBDIRECTORY(game_log)
-ADD_SUBDIRECTORY(map)
-
-
-
