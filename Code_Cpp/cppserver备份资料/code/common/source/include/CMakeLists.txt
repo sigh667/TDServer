@@ -1,0 +1,6 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)
+
+# Ìí¼ÓÔ´Ä¿Â¼
+ADD_SUBDIRECTORY(protocol)
+
+
